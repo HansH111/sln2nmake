@@ -10,11 +10,17 @@
 - Uses backslashes exclusively for Windows `NMAKE` compatibility.
 
 ## Usage
-Run from the solution directory:  
-- perl sln2nmake.pl <solution.sln> [project_dir]  
-  <solution.sln>: Path to the .sln file (required).  
-  [project_dir]: Optional filter for a specific project directory.
-
+```
+Syntax : sln2nmake.pl -pl <x64|win32> -conf <debug|release>  
+                     [-opts <linker opts>] [-v] <fn.sln> [<vcproj/vcxprojfn>]  
+         generate a Makefile from a sln file  
+  
+Options: -pl      platform, default: x64  
+         -conf    config,   default: Release  
+         -opts    optional linker options  
+         -v       be more verbose  
+```
+ 
 ## Example
 perl sln2nmake.pl MySolution.sln  
 or  
@@ -28,24 +34,22 @@ Processes MySolution.sln, generates a Makefile in MyProject1\, and a master Make
   nmake clean
 
 - Build specific configuration:  
-    nmake Win32debug    # Win32 Debug  
-    nmake x64release    # x64 Release  
+    nmake project1   
 
 ## Output Structure
     SolutionDir\
     ├── Makefile
+    ├── Makefile_Project1
+    ├── Makefile_Project2
     ├── Project1\
-    │   ├── Makefile
     │   └── Project1.vcxproj
     ├── Project2\
-    │   ├── Makefile
     │   └── Project2.vcproj
     └── MySolution.sln
 
 ## Limitations
 - clean target assumes default executable name ($projnm.exe); custom OutputFile paths may not be cleaned.
 - Only supports Release and Debug configurations (extendable via code).
-- Uses regex parsing for .vcxproj, potentially missing complex XML structures.
 
 ## License
 MIT License - free to use, modify, and distribute.
